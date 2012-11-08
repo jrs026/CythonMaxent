@@ -1,3 +1,7 @@
+/*
+ * This is only a small test of the cpp code with dummy data
+ */
+
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -7,7 +11,7 @@
 
 using namespace std;
 
-int main(char **argv, int argc) {
+int main(int argc, char **argv) {
   srand(time(NULL));
 
   vector<InstanceSet>* data = new vector<InstanceSet>();
@@ -31,4 +35,10 @@ int main(char **argv, int argc) {
   mm.set_training_data(data);
   mm.lbfgs_train();
   mm.print_weights(cout);
+  vector<pair<string, double> > features;
+  mm.get_features(&features);
+  vector<pair<string, double> >::iterator it;
+  for (it = features.begin(); it != features.end(); ++it) {
+    cout << it->first << " " << it->second << endl;
+  }
 }

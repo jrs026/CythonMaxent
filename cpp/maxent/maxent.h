@@ -60,6 +60,9 @@ class MaxentModel {
   // Test the model on a set of annotated data, returning the accuracy
   double test(const vector<InstanceSet>& data);
 
+  // Get the names/weights of all features
+  void get_features(vector<pair<string, double> >* features);
+
   // Print the feature weights/names to the given stream
   void print_weights(std::ostream& out);
 

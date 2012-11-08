@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <cstdlib>
+#include <cstdio>
 
 #include <iostream>
 #include <limits>
@@ -126,6 +127,14 @@ double MaxentModel::test(const vector<InstanceSet>& data) {
   }
 }
 
+void MaxentModel::get_features(vector<pair<string, double> >* features) {
+  features->clear();
+  unordered_map<string, int>::iterator it;
+  for (it = feature_index.begin(); it != feature_index.end(); ++it) {
+    features->push_back(make_pair(it->first, feature_weights[it->second]));
+  }
+}
+
 void MaxentModel::print_weights(std::ostream& out) {
   unordered_map<string, int>::iterator it;
   for (it = feature_index.begin(); it != feature_index.end(); ++it) {
@@ -201,17 +210,6 @@ double MaxentModel::compute_gradient(const vector<InstanceSet>& data,
       (*gradient)[i] += 2.0 * l2_norm * feature_weights[i];
     }
   }
-  /*
-  cout << "Weights: ";
-  for (int i = 0; i < feature_weights.size(); ++i) {
-    cout << feature_weights[i] << " ";
-  }
-  cout << endl << "Gradient: ";
-  for (int i = 0; i < feature_weights.size(); ++i) {
-    cout << gradient[i] << " ";
-  }
-  cout << endl << "Objective: " << objective << endl;
-  */
   return objective;
 }
 

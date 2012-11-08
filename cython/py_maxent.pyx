@@ -22,7 +22,7 @@ cdef extern from "cpp/maxent/maxent.h":
     void get_probs(InstanceSet&, vector[double]*)
     int get_label(InstanceSet&)
     double test(vector[InstanceSet])
-
+    void get_features(vector[pair[string, double] ]*)
 
 cdef class PyMaxent:
   cdef MaxentModel* thisptr
@@ -69,6 +69,15 @@ cdef class PyMaxent:
     cdef vector[InstanceSet]* cpp_data = self.convert_instance_sets(py_data)
     result = self.thisptr.test(cpp_data[0])
     del cpp_data
+    return result
+
+  # Returns the feature names/weights as a list of tuples
+  def get_features(self):
+    cdef vector[pair[string, double] ] features
+    self.thisptr.get_features(&features)
+    result = []
+    for i in xrange(0, features.size()):
+      result.append((features[i].first, features[i].second))
     return result
 
   # This allocates a new object which must be deleted.
