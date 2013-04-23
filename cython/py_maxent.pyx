@@ -102,6 +102,7 @@ cdef class PyMaxent:
     cdef MaxentInstance cpp_instance
     cpp_instance_set.true_instance = py_instance_set.true_instance
     for instance in py_instance_set.instances:
+      cpp_instance.clear()
       for (name, value) in instance:
         cpp_instance.push_back(pair[string, double](name, value))
       cpp_instance_set.instances.push_back(cpp_instance)
